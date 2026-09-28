@@ -3,7 +3,7 @@
   publish = "dist/quiz-app/browser"
 
 [build.environment]
-  NODE_VERSION = "22"
+  NODE_VERSION = "24"
 
 # Angular routes (/lab/lab2, /rezultat...) exist only in the browser:
 # serve index.html for any path so a page refresh doesn't return 404.
