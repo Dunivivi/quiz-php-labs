@@ -121,6 +121,7 @@ export class QuizService {
       labId: s.labId,
       nume: s.student.nume,
       prenume: s.student.prenume,
+      grupa: s.student.grupa,
       attempt: this.history().filter(sameStudent).length + 1,
       total,
       correct,

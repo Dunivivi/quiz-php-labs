@@ -34,6 +34,7 @@ export class SheetsService {
         Laborator: lab?.name ?? result.labId,
         Nume: result.nume,
         Prenume: result.prenume,
+        Grupa: result.grupa ?? '',
         Încercarea: result.attempt,
         Corecte: `${result.correct}/${result.total}`,
         Nota: result.nota,

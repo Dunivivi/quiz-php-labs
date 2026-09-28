@@ -6,7 +6,13 @@
       </app-score-ring>
 
       <div class="summary__body">
-        <p class="eyebrow">{{ lab()?.name }} · încercarea {{ r.attempt }}</p>
+        <p class="eyebrow">
+          {{ lab()?.name }}
+          @if (r.grupa) {
+            · {{ r.grupa }}
+          }
+          · încercarea {{ r.attempt }}
+        </p>
         <h1 class="summary__title">{{ r.prenume }} {{ r.nume }}</h1>
         <p class="summary__grade" [style.color]="grade().color">{{ grade().title }}</p>
         <p class="muted">{{ grade().message }}</p>

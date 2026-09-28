@@ -14,7 +14,7 @@ export class ExcelService {
     const wb = XLSX.utils.book_new();
 
     const summary = XLSX.utils.json_to_sheet([summaryRow(result)]);
-    summary['!cols'] = [18, 20, 16, 16, 10, 10, 8, 12].map((wch) => ({ wch }));
+    summary['!cols'] = [18, 20, 16, 16, 10, 10, 10, 8, 12].map((wch) => ({ wch }));
     XLSX.utils.book_append_sheet(wb, summary, 'Rezultat');
 
     if (session) {
@@ -40,7 +40,7 @@ export class ExcelService {
     const XLSX = await import('xlsx');
     const wb = XLSX.utils.book_new();
     const sheet = XLSX.utils.json_to_sheet(results.map(summaryRow));
-    sheet['!cols'] = [18, 20, 16, 16, 10, 10, 8, 12].map((wch) => ({ wch }));
+    sheet['!cols'] = [18, 20, 16, 16, 10, 10, 10, 8, 12].map((wch) => ({ wch }));
     XLSX.utils.book_append_sheet(wb, sheet, 'Rezultate');
     XLSX.writeFile(wb, `rezultate_${new Date().toISOString().slice(0, 10)}.xlsx`);
   }
@@ -52,6 +52,7 @@ function summaryRow(r: QuizResult) {
     Laborator: findLab(r.labId)?.name ?? r.labId,
     Nume: r.nume,
     Prenume: r.prenume,
+    Grupa: r.grupa ?? '',
     Încercarea: r.attempt,
     Corecte: `${r.correct}/${r.total}`,
     Nota: r.nota,

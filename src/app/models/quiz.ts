@@ -17,6 +17,7 @@ export interface Lab {
 export interface Student {
   nume: string;
   prenume: string;
+  grupa?: string;
 }
 
 /** O întrebare din testul în desfășurare. */
@@ -56,6 +57,7 @@ export interface QuizResult {
   labId: string;
   nume: string;
   prenume: string;
+  grupa?: string;
   /** A câta încercare a acestui elev la acest laborator (pe acest dispozitiv). */
   attempt: number;
   total: number;

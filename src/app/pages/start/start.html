@@ -47,7 +47,7 @@
             (ngModelChange)="nume.set($event)"
           />
           @if (submitted() && !numeValid()) {
-            <span class="field__error">Scrie numele de familie (doar litere).</span>
+            <span class="field__error">Scrie numele de familie.</span>
           }
         </div>
 
@@ -62,9 +62,16 @@
             (ngModelChange)="prenume.set($event)"
           />
           @if (submitted() && !prenumeValid()) {
-            <span class="field__error">Scrie prenumele (doar litere).</span>
+            <span class="field__error">Scrie prenumele.</span>
           }
         </div>
+
+        @if (submitted() && numeValid() && prenumeValid() && !match()) {
+          <p class="form__error" role="alert">
+            Numele nu se găsește în lista grupei. Verifică ortografia: întâi numele de familie,
+            apoi prenumele.
+          </p>
+        }
 
         <button type="submit" class="btn btn--primary btn--lg form__submit">
           Începe testul

@@ -4,7 +4,9 @@ Teste pe laboratoare pentru cursul **Programarea server-side a site-urilor Web**
 
 - Fiecare laborator are un set de întrebări (Lab 2: 100 de întrebări).
 - Un test = **10 întrebări** alese aleatoriu: **4 teorie**, **3 analiză de cod**, **3 completare de cod** (elevul scrie ce lipsește în cod).
-- Elevul își scrie **Nume** și **Prenume** înainte de test. Răspunsurile corecte apar abia la final.
+- Elevul își scrie **Nume** și **Prenume** înainte de test; numele trebuie să fie în lista grupelor din
+  `src/app/data/students.ts` (nu contează majusculele, diacriticele, cratimele sau spațiile în plus).
+  Răspunsurile corecte apar abia la final.
 - **Nota** (1–10) = numărul de răspunsuri corecte.
 - La final: rezultatul se **trimite automat în Google Sheets**, iar elevul poate **descărca Excel** (.xlsx) cu nota și răspunsurile.
 - Pagina **Rezultate**: toate testele date pe dispozitiv + export Excel.

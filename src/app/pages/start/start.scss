@@ -91,6 +91,19 @@
     grid-template-columns: 1fr 1fr;
   }
 
+  &__error {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--color-danger-soft);
+    color: var(--color-danger);
+    font-size: var(--text-sm);
+    font-weight: 600;
+
+    @include up(md) {
+      grid-column: 1 / -1;
+    }
+  }
+
   &__submit {
     @include up(md) {
       grid-column: 1 / -1;
