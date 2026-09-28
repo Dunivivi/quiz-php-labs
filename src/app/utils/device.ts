@@ -1,6 +1,5 @@
 /**
  * Informații despre dispozitivul de pe care s-a dat testul (pentru evidența profesorului).
- * Elevul este informat despre asta pe pagina de start.
  */
 export interface DeviceInfo {
   /** ID aleatoriu, păstrat în browser: arată dacă același dispozitiv e folosit de mai mulți elevi. */
