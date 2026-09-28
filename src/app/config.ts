@@ -8,7 +8,8 @@
  * 2. SHEET_VIEW_URL — linkul spre tabelul Google Sheets (pentru butonul „Deschide tabelul”).
  *    Opțional; lasă gol dacă nu vrei ca elevii să vadă linkul.
  */
-export const SHEETS_WEBAPP_URL = '';
+export const SHEETS_WEBAPP_URL =
+  'https://script.google.com/macros/s/AKfycbwMoPem4ENEBK_kmZOhxBstO8sc5KL6EQYmSh0SQwhi7T1Pe0faFFjtvSBVr5yuMo4ZNQ/exec';
 export const SHEET_VIEW_URL = '';
 
 /** Structura unui test: câte întrebări din fiecare tip. */
