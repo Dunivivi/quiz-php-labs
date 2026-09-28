@@ -1,0 +1,5 @@
+// Punctul de intrare pentru stilurile globale.
+// Ordinea contează: întâi tokens, apoi reset, apoi componente.
+@use 'styles/tokens';
+@use 'styles/base';
+@use 'styles/components';

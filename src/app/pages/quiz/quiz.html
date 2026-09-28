@@ -1,0 +1,95 @@
+@if (session(); as s) {
+  <div class="quiz container" [style.--accent]="lab()?.color">
+    <header class="quiz__head">
+      <div class="quiz__who">
+        <span class="module-tile module-tile--sm" aria-hidden="true">L{{ lab()?.id?.replace('lab', '') }}</span>
+        <div>
+          <p class="eyebrow">{{ lab()?.name }} · {{ s.student.prenume }} {{ s.student.nume }}</p>
+          <p class="quiz__counter">
+            Întrebarea <strong>{{ s.current + 1 }}</strong> din {{ s.questions.length }}
+          </p>
+        </div>
+      </div>
+
+      @if (confirmQuit()) {
+        <span class="quit-confirm">
+          <span class="muted">Ieși? Testul nu se salvează.</span>
+          <button type="button" class="btn btn--ghost" (click)="confirmQuit.set(false)">Nu</button>
+          <button type="button" class="btn btn--danger" (click)="quit()">Da, ies</button>
+        </span>
+      } @else {
+        <button type="button" class="btn btn--ghost" (click)="confirmQuit.set(true)">Ieși</button>
+      }
+    </header>
+
+    <ol class="segments" aria-label="Progres">
+      @for (item of s.questions; track $index; let i = $index) {
+        <li
+          class="segments__item"
+          [class.is-current]="i === s.current"
+          [class.is-done]="i < s.current"
+          [attr.title]="typeLabels[item.type]"
+        ></li>
+      }
+    </ol>
+
+    @if (question(); as q) {
+      @for (key of [s.current]; track key) {
+        <article class="question card fade-up">
+          <span class="type type--{{ q.type }}">{{ typeLabels[q.type] }}</span>
+          <h1 class="question__text">{{ q.question }}</h1>
+
+          @if (q.type === 'fill') {
+            @if (codeParts(); as parts) {
+              <pre class="code-block question__code"><code>{{ parts.before }}<input
+                #fillInput
+                class="blank"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="off"
+                aria-label="Completează locul gol"
+                [style.width]="inputWidth()"
+                [value]="q.typed ?? ''"
+                (input)="typeAnswer($any($event.target).value)"
+              />{{ parts.after }}</code></pre>
+            }
+            <p class="hint">Scrie în câmpul evidențiat doar ce lipsește, apoi apasă <kbd>Enter</kbd>.</p>
+          } @else {
+            @if (q.code) {
+              <pre class="code-block question__code"><code>{{ q.code }}</code></pre>
+            }
+
+            <div class="options" role="radiogroup" aria-label="Variante de răspuns">
+              @for (option of q.options; track $index; let i = $index) {
+                <button
+                  type="button"
+                  role="radio"
+                  class="option"
+                  [class.is-selected]="q.picked === i"
+                  [attr.aria-checked]="q.picked === i"
+                  (click)="choose(i)"
+                >
+                  <span class="option__letter">{{ letters[i] }}</span>
+                  <span class="option__text">{{ option }}</span>
+                </button>
+              }
+            </div>
+          }
+
+          <div class="actions">
+            <span class="muted actions__hint">
+              @if (q.type !== 'fill') {
+                <kbd>1</kbd>–<kbd>4</kbd> alege · <kbd>Enter</kbd> continuă
+              }
+            </span>
+            <button type="button" class="btn btn--primary btn--lg" [disabled]="!answered()" (click)="next()">
+              {{ isLast() ? 'Finalizează testul' : 'Următoarea' }}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
+            </button>
+          </div>
+        </article>
+      }
+    }
+  </div>
+}

@@ -1,0 +1,130 @@
+@use 'mixins' as *;
+
+.start {
+  max-width: 720px;
+
+  &__title {
+    margin: var(--space-2) 0 var(--space-6);
+    font-size: var(--text-2xl);
+    font-weight: 800;
+
+    @include up(md) {
+      font-size: var(--text-3xl);
+    }
+  }
+
+  &__note {
+    margin-top: var(--space-5);
+    font-size: var(--text-sm);
+  }
+
+  .card {
+    border-top: 4px solid var(--accent);
+  }
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+
+  &:hover {
+    color: var(--color-text);
+  }
+}
+
+.rules {
+  display: grid;
+  gap: var(--space-3);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  @include up(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-2);
+
+    div {
+      display: flex;
+      flex-direction: column;
+      font-size: var(--text-sm);
+    }
+
+    span:not(.rules__num) {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+    }
+  }
+
+  &__num {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    color: #fff;
+    font-size: var(--text-lg);
+    font-weight: 800;
+  }
+}
+
+.form {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+
+  @include up(md) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &__submit {
+    @include up(md) {
+      grid-column: 1 / -1;
+      justify-self: end;
+    }
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+
+  label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  input {
+    min-height: 48px;
+    padding: 0 var(--space-4);
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    font-size: var(--text-base);
+    @include focus-ring;
+  }
+
+  &.is-invalid input {
+    border-color: var(--color-danger);
+  }
+
+  &__error {
+    font-size: var(--text-xs);
+    color: var(--color-danger);
+  }
+}

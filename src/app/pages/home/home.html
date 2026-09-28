@@ -1,0 +1,99 @@
+<div class="container">
+  <section class="hero fade-up">
+    <p class="eyebrow">Programarea server-side a site-urilor Web · PHP</p>
+    <h1 class="hero__title">Testul de laborator,<br />în 10 întrebări.</h1>
+    <p class="hero__lead muted">
+      Alegi laboratorul, îți scrii numele și primești {{ testSize }} întrebări alese aleatoriu din
+      setul laboratorului. Nota se salvează automat.
+    </p>
+
+    <ul class="structure" aria-label="Structura testului">
+      <li>
+        <strong>{{ structure.theory }}</strong>
+        <span>întrebări teoretice</span>
+      </li>
+      <li>
+        <strong>{{ structure.analysis }}</strong>
+        <span>analiză de cod</span>
+      </li>
+      <li>
+        <strong>{{ structure.fill }}</strong>
+        <span>completare de cod</span>
+      </li>
+    </ul>
+  </section>
+
+  @if (ongoing(); as o) {
+    <section class="resume fade-up" [style.--accent]="o.lab?.color">
+      <span class="module-tile" aria-hidden="true">L{{ o.lab?.id?.replace('lab', '') }}</span>
+      <div class="resume__text">
+        <strong>{{ o.student.prenume }} {{ o.student.nume }}, ai un test început</strong>
+        <span class="muted">{{ o.lab?.name }} · întrebarea {{ o.current }} din {{ o.total }}</span>
+      </div>
+      <div class="resume__actions">
+        <button type="button" class="btn btn--ghost" (click)="discard()">Renunță</button>
+        <button type="button" class="btn btn--primary" (click)="resume()">Continuă</button>
+      </div>
+    </section>
+  }
+
+  <section aria-labelledby="labs-title">
+    <div class="section-head">
+      <h2 id="labs-title">Laboratoare</h2>
+      <a routerLink="/rezultate" class="section-head__link">Vezi rezultatele →</a>
+    </div>
+
+    <div class="grid">
+      @for (lab of labs; track lab.id; let i = $index) {
+        <a
+          class="lab-card fade-up"
+          [routerLink]="['/lab', lab.id]"
+          [style.--accent]="lab.color"
+          [style.animation-delay.ms]="i * 60"
+        >
+          <div class="lab-card__top">
+            <span class="module-tile" aria-hidden="true">L{{ lab.id.replace('lab', '') }}</span>
+            @if (best(lab) !== null) {
+              <span
+                class="badge"
+                [class.badge--success]="best(lab)! >= 7"
+                [class.badge--warning]="best(lab)! >= 5 && best(lab)! < 7"
+                [class.badge--danger]="best(lab)! < 5"
+                >Nota maximă {{ best(lab) }}</span
+              >
+            }
+          </div>
+
+          <p class="eyebrow">{{ lab.name }}</p>
+          <h3 class="lab-card__title">{{ lab.title }}</h3>
+          <p class="lab-card__desc">{{ lab.description }}</p>
+
+          <p class="lab-card__label">Conține:</p>
+          <ul class="topics">
+            @for (t of lab.topics; track t) {
+              <li>{{ t }}</li>
+            }
+          </ul>
+
+          <div class="lab-card__footer">
+            <span class="muted">
+              {{ lab.questions.length }} întrebări · {{ count(lab, 'theory') }} teorie ·
+              {{ count(lab, 'analysis') }} analiză · {{ count(lab, 'fill') }} completare
+            </span>
+            <span class="btn btn--primary">
+              Începe
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
+            </span>
+          </div>
+        </a>
+      }
+
+      <div class="lab-card lab-card--soon" aria-hidden="true">
+        <span class="module-tile module-tile--muted">L3</span>
+        <p class="eyebrow">Laboratorul 3</p>
+        <h3 class="lab-card__title">În curând</h3>
+        <p class="lab-card__desc">Quiz-ul următorului laborator apare aici când e gata.</p>
+      </div>
+    </div>
+  </section>
+</div>

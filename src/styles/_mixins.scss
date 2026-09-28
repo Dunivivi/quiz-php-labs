@@ -1,0 +1,32 @@
+@use 'sass:map';
+@use 'tokens';
+
+/// Media query după numele breakpoint-ului: @include up(md) { ... }
+@mixin up($name) {
+  @media (min-width: map.get(tokens.$breakpoints, $name)) {
+    @content;
+  }
+}
+
+/// Media query pentru ecrane mici: @include down(md) { ... }
+@mixin down($name) {
+  @media (max-width: map.get(tokens.$breakpoints, $name) - 1px) {
+    @content;
+  }
+}
+
+/// Inel de focus vizibil doar la navigarea cu tastatura
+@mixin focus-ring {
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+}
+
+/// Card de bază (suprafață + bordură + umbră)
+@mixin surface($radius: var(--radius-lg)) {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $radius;
+  box-shadow: var(--shadow-sm);
+}

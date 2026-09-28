@@ -1,0 +1,255 @@
+@use 'mixins' as *;
+
+.result {
+  max-width: 880px;
+}
+
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+
+  @include down(md) {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 260px;
+  }
+
+  &__title {
+    margin: var(--space-2) 0 var(--space-1);
+    font-size: var(--text-3xl);
+    font-weight: 800;
+  }
+
+  &__grade {
+    font-weight: 800;
+    font-size: var(--text-lg);
+  }
+
+  &__stats {
+    display: flex;
+    gap: var(--space-8);
+    margin: var(--space-5) 0;
+
+    @include down(md) {
+      justify-content: center;
+    }
+
+    dt {
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    dd {
+      margin: 0;
+      font-size: var(--text-xl);
+      font-weight: 800;
+
+      &.is-success {
+        color: var(--color-success);
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+
+    @include down(md) {
+      justify-content: center;
+    }
+  }
+}
+
+.sync {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+
+  @include down(md) {
+    justify-content: center;
+  }
+
+  &--sent {
+    background: var(--color-success-soft);
+    color: var(--color-success);
+  }
+
+  &--error {
+    background: var(--color-danger-soft);
+    color: var(--color-danger);
+  }
+
+  a {
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  &__retry {
+    min-height: 34px;
+    padding: 0 var(--space-3);
+  }
+
+  &__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    animation: blink 1s ease-in-out infinite;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.review {
+  margin-top: var(--space-12);
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+
+    h2 {
+      font-size: var(--text-xl);
+    }
+  }
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.review-item {
+  @include surface(var(--radius-md));
+  padding: var(--space-5);
+  margin-bottom: var(--space-3);
+  border-left: 4px solid var(--color-success);
+
+  &.is-wrong {
+    border-left-color: var(--color-danger);
+  }
+
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+
+    h3 {
+      font-size: var(--text-base);
+      font-weight: 600;
+      line-height: 1.45;
+      letter-spacing: 0;
+    }
+  }
+
+  &__title {
+    flex: 1;
+  }
+
+  &__type {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  &__num {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: var(--radius-full);
+    background: var(--color-surface-2);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--color-text-muted);
+  }
+
+  .code-block {
+    margin-top: var(--space-4);
+  }
+
+  &__explain {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+}
+
+.answers {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-4) 0 0;
+  display: grid;
+  gap: var(--space-2);
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+
+    &.is-correct {
+      background: var(--color-success-soft);
+    }
+    &.is-wrong {
+      background: var(--color-danger-soft);
+    }
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    word-break: break-word;
+  }
+
+  &__tag {
+    font-weight: 800;
+
+    .is-correct & {
+      color: var(--color-success);
+    }
+    .is-wrong & {
+      color: var(--color-danger);
+    }
+  }
+
+  em {
+    margin-left: auto;
+    font-size: var(--text-xs);
+    font-style: normal;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+}
+
+.empty {
+  padding: var(--space-10);
+  text-align: center;
+}

@@ -1,0 +1,90 @@
+<div class="container results">
+  <header class="results__head fade-up">
+    <div>
+      <p class="eyebrow">Pe acest dispozitiv</p>
+      <h1>Rezultate</h1>
+    </div>
+
+    <div class="results__actions">
+      @if (sheetUrl) {
+        <a [href]="sheetUrl" target="_blank" rel="noopener" class="btn btn--secondary">Tabelul Google Sheets</a>
+      }
+      @if (history().length) {
+        <button type="button" class="btn btn--primary" (click)="exportAll()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14" /></svg>
+          Export Excel
+        </button>
+      }
+    </div>
+  </header>
+
+  @if (unsent() && sheets.enabled) {
+    <div class="notice fade-up">
+      <span>{{ unsent() }} {{ unsent() === 1 ? 'rezultat nu a fost trimis' : 'rezultate nu au fost trimise' }} în Google Sheets.</span>
+      <button type="button" class="btn btn--secondary" (click)="retry()">Trimite din nou</button>
+    </div>
+  }
+
+  @if (history().length === 0) {
+    <div class="empty card fade-up">
+      <div class="empty__icon" aria-hidden="true">📝</div>
+      <h2>Încă nu există rezultate</h2>
+      <p class="muted">După primul test, nota apare aici.</p>
+      <a routerLink="/" class="btn btn--primary">Alege laboratorul</a>
+    </div>
+  } @else {
+    <section class="card table-card fade-up">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Elev</th>
+              <th>Laborator</th>
+              <th>Data</th>
+              <th>Timp</th>
+              <th class="num">Corecte</th>
+              <th class="num">Nota</th>
+              @if (sheets.enabled) {
+                <th>Salvat</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (r of history(); track r.id) {
+              <tr>
+                <td>
+                  <strong>{{ r.nume }} {{ r.prenume }}</strong>
+                  <span class="muted"> · #{{ r.attempt }}</span>
+                </td>
+                <td>{{ findLab(r.labId)?.name }}</td>
+                <td class="muted">{{ r.date | date: 'd MMM, HH:mm' }}</td>
+                <td class="muted">{{ r.durationSec | duration }}</td>
+                <td class="num">{{ r.correct }}/{{ r.total }}</td>
+                <td class="num"><span class="badge" [class]="notaClass(r.nota)">{{ r.nota }}</span></td>
+                @if (sheets.enabled) {
+                  <td>
+                    @switch (r.sync) {
+                      @case ('sent') { <span class="sync-ok">✓</span> }
+                      @case ('error') { <span class="sync-err">✕</span> }
+                      @default { <span class="muted">…</span> }
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="clear">
+      @if (confirmClear()) {
+        <span class="muted">Ștergi toate rezultatele de pe acest dispozitiv?</span>
+        <button type="button" class="btn btn--ghost" (click)="confirmClear.set(false)">Anulează</button>
+        <button type="button" class="btn btn--danger" (click)="clear()">Șterge</button>
+      } @else {
+        <button type="button" class="btn btn--ghost" (click)="confirmClear.set(true)">Șterge rezultatele locale</button>
+      }
+    </div>
+  }
+</div>
