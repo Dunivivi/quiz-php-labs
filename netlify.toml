@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist/quiz-app/browser"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Angular routes (/lab/lab2, /rezultat...) exist only in the browser:
+# serve index.html for any path so a page refresh doesn't return 404.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
