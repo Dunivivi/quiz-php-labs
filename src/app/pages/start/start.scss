@@ -128,3 +128,12 @@
     color: var(--color-danger);
   }
 }
+
+.privacy {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+
+  @include up(md) {
+    grid-column: 1 / -1;
+  }
+}

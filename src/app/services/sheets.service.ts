@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { SHEETS_WEBAPP_URL } from '../config';
+import { SHEETS_WEBAPP_URL, SHEET_TAB } from '../config';
 import { findLab } from '../data/labs';
 import { QuizResult } from '../models/quiz';
+import { collectDevice, deviceColumns } from '../utils/device';
 import { QuizService } from './quiz.service';
 
 /**
@@ -23,17 +24,23 @@ export class SheetsService {
 
     this.quiz.setSync(result.id, 'pending');
     const lab = findLab(result.labId);
-    const row = {
+    const device = await collectDevice();
+    const payload = {
+      sheet: SHEET_TAB,
       id: result.id,
-      data: new Date(result.date).toLocaleString('ro-RO'),
-      laborator: lab?.name ?? result.labId,
-      nume: result.nume,
-      prenume: result.prenume,
-      incercarea: result.attempt,
-      corecte: `${result.correct}/${result.total}`,
-      nota: result.nota,
-      durata_sec: result.durationSec,
-      detalii: result.details,
+      // titlurile coloanelor din tabel (coloanele noi se adaugă automat)
+      row: {
+        Data: new Date(result.date).toLocaleString('ro-RO'),
+        Laborator: lab?.name ?? result.labId,
+        Nume: result.nume,
+        Prenume: result.prenume,
+        Încercarea: result.attempt,
+        Corecte: `${result.correct}/${result.total}`,
+        Nota: result.nota,
+        'Durata (sec)': result.durationSec,
+        Răspunsuri: result.details,
+        ...deviceColumns(device),
+      },
     };
 
     try {
@@ -42,7 +49,7 @@ export class SheetsService {
       const response = await fetch(SHEETS_WEBAPP_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(row),
+        body: JSON.stringify(payload),
       });
       const json = await response.json().catch(() => ({ ok: response.ok }));
       const ok = response.ok && json.ok !== false;
