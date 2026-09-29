@@ -40,6 +40,7 @@ export class SheetsService {
         Nota: result.nota,
         'Durata (sec)': result.durationSec,
         Răspunsuri: result.details,
+        Semnale: result.signals ?? '',
         ...deviceColumns(device),
       },
     };

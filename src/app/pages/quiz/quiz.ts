@@ -1,7 +1,17 @@
-import { Component, ElementRef, computed, effect, inject, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  ElementRef,
+  computed,
+  effect,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { findLab } from '../../data/labs';
 import { BLANK, QuestionType } from '../../models/question';
+import { IntegrityService } from '../../services/integrity.service';
 import { QuizService } from '../../services/quiz.service';
 import { SheetsService } from '../../services/sheets.service';
 
@@ -22,6 +32,7 @@ export const TYPE_LABELS: Record<QuestionType, string> = {
 export class Quiz {
   protected readonly quiz = inject(QuizService);
   private readonly sheets = inject(SheetsService);
+  private readonly integrity = inject(IntegrityService);
   private readonly router = inject(Router);
 
   protected readonly letters = ['A', 'B', 'C', 'D'];
@@ -55,6 +66,10 @@ export class Quiz {
   constructor() {
     if (!this.session()) this.router.navigate(['/']);
 
+    // urmărim ieșirile din pagină, copierile și lipirile cât timp testul e deschis
+    this.integrity.attach();
+    inject(DestroyRef).onDestroy(() => this.integrity.detach());
+
     // la întrebările de completare, cursorul intră direct în câmpul gol
     effect(() => {
       if (this.question()?.type === 'fill') {
@@ -73,6 +88,7 @@ export class Quiz {
 
   protected next(): void {
     if (!this.answered()) return;
+    this.integrity.answered((this.session()?.current ?? 0) + 1);
     const result = this.quiz.next();
     if (result) {
       this.sheets.send(result); // trimitem în fundal; pagina de rezultat arată starea

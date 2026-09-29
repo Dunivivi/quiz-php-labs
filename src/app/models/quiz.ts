@@ -69,5 +69,7 @@ export interface QuizResult {
   durationSec: number;
   /** Răspunsurile, pe scurt (pentru Excel / Google Sheets). */
   details: string;
+  /** Ieșiri din pagină, copieri, lipiri — doar pentru tabelul profesorului. */
+  signals?: string;
   sync: SyncStatus;
 }

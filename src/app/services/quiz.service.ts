@@ -6,6 +6,7 @@ import { Lab, QuizResult, QuizSession, SessionQuestion, Student, SyncStatus } fr
 import { isFillCorrect } from '../utils/answers';
 import { shuffle } from '../utils/shuffle';
 import { notaFor } from '../shared/grade';
+import { IntegrityService } from './integrity.service';
 import { StorageService } from './storage.service';
 
 const SESSION_KEY = 'session';
@@ -28,6 +29,7 @@ const TYPE_ORDER: QuestionType[] = ['theory', 'analysis', 'fill'];
 @Injectable({ providedIn: 'root' })
 export class QuizService {
   private readonly storage = inject(StorageService);
+  private readonly integrity = inject(IntegrityService);
 
   readonly session = signal<QuizSession | null>(this.storage.get(SESSION_KEY, null));
   readonly lastSession = signal<QuizSession | null>(this.storage.get(LAST_KEY, null));
@@ -46,6 +48,7 @@ export class QuizService {
 
     this.lastStudent.set(student);
     this.storage.set(STUDENT_KEY, student);
+    this.integrity.reset();
 
     const questions = TYPE_ORDER.flatMap((type) =>
       this.pick(lab, type, TEST_STRUCTURE[type]).map((index) => this.toSessionQuestion(lab, index)),
@@ -132,6 +135,7 @@ export class QuizService {
       details: finished.questions
         .map((q, i) => `${i + 1}. ${q.isCorrect ? '✓' : '✗'} ${answerText(q)}`)
         .join(' | '),
+      signals: this.integrity.summary(),
       sync: 'pending',
     };
 
